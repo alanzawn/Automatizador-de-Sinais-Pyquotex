@@ -1,0 +1,1 @@
+# Automatizador-de-Sinais-Pyquotex
