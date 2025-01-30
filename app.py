@@ -1,140 +1,43 @@
-# README.md
+# app.py
 
-# PyQuotex
-
-<img src="https://github.com/cleitonleonel/pyquotex/blob/master/pyquotex.gif?raw=true" alt="pyquotex" width="200"/>
-
-To access more features and greater stability, consider joining the private version.
-
-# About the PyQuotex Library
-
-This library was developed with the purpose of facilitating communication with the Quotex platform through WebSockets, enabling real-time data retrieval and the automation of operations. **It is important to note that this library is not a trading bot, nor does it intend to be**.
-
-## Library Objective
-
-The main goal of this library is to provide the necessary tools for developers to integrate their applications with the Quotex platform, automating specific operations in a safe and efficient manner.
-
-## Automation Implementation
-
-Any additional automation, including the creation of automatic bots that make trading decisions, must be implemented by the developer who chooses to use this library in their projects. The responsibility for these additional implementations lies entirely with the developer.
-
-## Disclaimer
-
-As the developer of this library, **I am not responsible for any malfunction or application failure** that may occur due to improper use of the library or the implementation of automations that go beyond the original scope of this tool.
-
-If you decide to use this library, it is crucial that you carefully analyze and rigorously test your implementations to ensure that they meet your needs and expectations.
-
-# Notice about Support and Discussions
-
-Due to the high volume of messages seeking information and support, and considering that I am just one person and do not have the time to assist everyone individually, **I have created a [discussion group on Telegram](https://t.me/+Uzcmc-NZvN4xNTQx)**.
-
-This group was created so that members can help each other, ask questions, and collaborate with others who are also using this library. Your participation and interaction in the group are highly encouraged, as this way everyone can benefit from the collective experience.
-
-Feel free to join the group and contribute with your questions and knowledge.
-
-
-
-### Important note
-For some reason, cloudflare ends up identifying automated access to the quotex API and we
-applies a block, which prevents successful authentication on the platform using a user
-and password, I recommend using Python 3.8 or higher to be successful with this API.
-For Windows users it is necessary to install the latest possible openssl, which can be obtained
-here [Openssl-Windows](https://slproweb.com/products/Win32OpenSSL.html) .
-For Linux users, the latest possible versions of openssl are also recommended, simply
-just run ```sudo apt install openssl```.
-
-## Let`s Go to the Private Repository
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/cleiton.leonel)
-
-## Support with Cryptocurrency
-
-You can support this project by sending cryptocurrency to the addresses below. Every contribution is appreciated!
-
-### Dogecoin (DOGE) <img src="https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=024" alt="Dogecoin" width="20"/>
-`DMwSPQMk61hq49ChmTMkgyvUGZbVbWZekJ`  
-
-### Bitcoin (BTC) <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=024" alt="Bitcoin" width="20"/>  
-`bc1qtea29xkpyx9jxtp2kc74m83rwh93vjp7nhpgkm`  
-
-### Ethereum (ETH) <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=024" alt="Ethereum" width="20"/>  
-`0x20d1AD19277CaFddeE4B8f276ae9f3E761523223`
-
-### Solana (SOL) <img src="https://cryptologos.cc/logos/solana-sol-logo.png?v=024" alt="Solana" width="20"/>
-`4wbE2FVU9x4gVErVSsWwhcdXQnDBrBVQFvbMqaaykcqo`  
-
-Thank you for your support! 🚀
-
-
-### Showcase
-
-https://github.com/user-attachments/assets/acaa0cbb-80c2-450c-9c8f-83fdbfedf0fa
-
-
-### Install
-```shell
-git clone https://github.com/cleitonleonel/pyquotex.git
-cd pyquotex
-pip install -r requirements.txt
-python3 app.py
-```
-
-### Install by pip
-```shell
-pip install git+https://github.com/cleitonleonel/pyquotex.git
-```
-
-### 📖 How to Fix the `playwright install` Error
-
-![img.png](img.png)
-
-If you encounter the error related to `playwright install` when using this library, follow the steps below to resolve the issue.
-
-## Install Playwright Browsers
-Ensure that Playwright and the required browsers are installed.
-
-### Install the compatible browsers:
-```bash
-playwright install
-```
-
-### Import as lib
-```python
-from quotexapi.stable_api import Quotex
-
-email = "account@gmail.com"
-password = "you_password"
-
-client = Quotex(
-    email=email,
-    password=password
-)
-```
-
-### Login by email and password
-if connect sucess return True,None  
-
-if connect fail return False,None
-
-```python
 import os
 import sys
 import json
 import time
 import random
 import asyncio
+import pyfiglet
 from pathlib import Path
 from quotexapi.expiration import (
     timestamp_to_date,
     get_timestamp_days_ago
 )
+from quotexapi.config import (
+    email,
+    password
+)
 from quotexapi.stable_api import Quotex
-
 from quotexapi.utils.processor import process_candles, get_color
+
+__author__ = "Cleiton Leonel Creton"
+__version__ = "1.0.0"
+
+__message__ = f"""
+Use in moderation, because management is everything!
+Support: cleiton.leonel@gmail.com or +55 (27) 9 9577-2291
+"""
 
 USER_AGENT = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0"
 
-email = "account@gmail.com"
-password = "you_password"
+custom_font = pyfiglet.Figlet(font="ansi_shadow")
+ascii_art = custom_font.renderText("PyQuotex")
+art_effect = f"""{ascii_art}
+
+        author: {__author__} versão: {__version__}
+        {__message__}
+"""
+
+print(art_effect)
 
 client = Quotex(
     email=email,
@@ -142,26 +45,32 @@ client = Quotex(
     lang="pt",  # Default pt -> Português.
 )
 
+
 # client.debug_ws_enable = True
 
 
 def get_all_options():
-    return """Opções disponíveis:
+    return """Available options:
     - test_connection
     - get_profile
     - get_balance
     - get_signal_data
+    - trade_and_monitor
     - get_payment
+    - get_payout
+    - get_payout_by_asset
     - get_candle
     - get_candle_v2
     - get_candle_progressive
     - get_realtime_candle
     - get_candles_all_asset
     - get_realtime_sentiment
+    - get_realtime_price
     - assets_open
     - buy_simple
     - buy_and_check_win
     - buy_multiple
+    - buy_pending
     - balance_refill
     - help
     """
@@ -172,13 +81,13 @@ async def connect(attempts=5):
     if not check:
         attempt = 0
         while attempt <= attempts:
-            if not client.check_connect():
+            if not await client.check_connect():
                 check, reason = await client.connect()
                 if check:
-                    print("Reconnect successfully!!!")
+                    print("Reconnected successfully!!!")
                     break
                 else:
-                    print("Reconnect error.")
+                    print("Error when reconnecting.")
                     attempt += 1
                     if Path(os.path.join(".", "session.json")).is_file():
                         Path(os.path.join(".", "session.json")).unlink()
@@ -198,10 +107,19 @@ async def connect(attempts=5):
 
 
 async def test_connection():
-    await client.connect()
-    is_connected = client.check_connect()
-    print(f"Connected: {is_connected}")
+    check_connect, message = await client.connect()
+    is_connected = await client.check_connect()
+    if not is_connected:
+        check_connect, message = await client.connect()
+        if check_connect:
+            print(f"Reconnected successfully!!!")
+        else:
+            print("Error when reconnecting.")
+    else:
+        print(f"Connected: {is_connected}")
+
     print("Exiting...")
+
     client.close()
 
 
@@ -221,17 +139,17 @@ async def buy_simple():
     if check_connect:
         # client.change_account("REAL")
         amount = 50
-        asset = "AUDCAD"  # "EURUSD_otc"
+        asset = "USDINR_otc"  # "EURUSD_otc"
         direction = "call"
-        duration = 60  # in seconds
+        duration = 120  # in seconds
         asset_name, asset_data = await client.get_available_asset(asset, force_open=True)
         print(asset_name, asset_data)
         if asset_data[2]:
-            print("OK: Asset is closing.")
-            status, buy_info = await client.buy(amount, asset_name, direction, duration)
+            print("OK: Asset is open.")
+            status, buy_info = await client.buy(amount, asset_name, direction, duration, time_mode="TIME")
             print(status, buy_info)
         else:
-            print("ERROR: Asset is closing.")
+            print("ERRO: Asset is closed.")
 
         print("Current Balance: ", await client.get_balance())
 
@@ -243,7 +161,7 @@ async def buy_simple():
 async def get_result():
     check_connect, reason = await client.connect()
     if check_connect:
-        status, operation_info  = await client.get_result('3ca7d99f-744e-4d5b-9780-27e50575290d')
+        status, operation_info = await client.get_result('3ca7d99f-744e-4d5b-9780-27e50575290d')
         print(status, operation_info)
     print("Exiting...")
 
@@ -256,14 +174,14 @@ async def get_profile():
         # client.change_account("REAL")
         profile = await client.get_profile()
         description = (
-            f"\nUsuário: {profile.nick_name}\n"
-            f"Balance Demo: {profile.demo_balance}\n"
-            f"Balance Real: {profile.live_balance}\n"
-            f"Id: {profile.profile_id}\n"
+            f"\nUser: {profile.nick_name}\n"
+            f"Demo Balance: {profile.demo_balance}\n"
+            f"Real Balance: {profile.live_balance}\n"
+            f"ID: {profile.profile_id}\n"
             f"Avatar: {profile.avatar}\n"
             f"Country: {profile.country_name}\n"
+            f"Timezone: {profile.offset}"
         )
-
         print(description)
 
     print("Exiting...")
@@ -289,26 +207,83 @@ async def buy_and_check_win():
         print("Current Balance: ", await client.get_balance())
         amount = 50
         asset = "EURUSD_otc"  # "EURUSD_otc"
-        direction = "call"
+        direction = "put"
         duration = 60  # in seconds
         asset_name, asset_data = await client.get_available_asset(asset, force_open=True)
         print(asset_name, asset_data)
         if asset_data[2]:
-            print("OK: Asset is closing.")
+            print("OK: Asset is open.")
             status, buy_info = await client.buy(amount, asset_name, direction, duration)
             print(status, buy_info)
             if status:
-                print("Waiting result...")
+                print("Waiting for result...")
                 if await client.check_win(buy_info["id"]):
-                    print(f"\nWin!!! \nWe win boy!!!\nProfit: R$ {client.get_profit()}")
+                    print(f"\nWin!!! \nWe won, buddy!!!\nProfit: R$ {client.get_profit()}")
                 else:
-                    print(f"\nLoss!!! \nWe lost boy!!!\nLoss: R$ {client.get_profit()}")
+                    print(f"\nLoss!!! \nWe lost, buddy!!!\nLoss: R$ {client.get_profit()}")
             else:
                 print("Operation failed!!!")
         else:
-            print("ERROR: Asset is closing.")
+            print("ERRO: Asset is closed.")
 
-        print("Profit: ", await client.get_balance())
+        print("Current Balance: ", await client.get_balance())
+
+    print("Exiting...")
+
+    client.close()
+
+
+async def trade_and_monitor():
+    check_connect, message = await client.connect()
+    if check_connect:
+        amount = 50
+        asset = "AUDCAD"
+        direction = "call"
+        duration = 60  # in seconds
+
+        asset_name, asset_data = await client.get_available_asset(asset, force_open=True)
+        print(asset_name, asset_data)
+
+        if asset_data[2]:
+            print("OK: Asset is open.")
+            status, buy_info = await client.buy(amount, asset_name, direction, duration)
+            if status:
+                open_price = buy_info.get('openPrice')
+                close_timestamp = buy_info.get('closeTimestamp')
+                print("Open Price:", open_price)
+
+                await asyncio.sleep(duration)
+
+                await client.start_realtime_price(asset, 60)
+
+                prices = await client.get_realtime_price(asset_name)
+
+                if prices:
+                    current_price = prices[-1]['price']
+                    current_timestamp = prices[-1]['time']
+                    print(f"Current Time: {int(current_timestamp)}, Close Time: {close_timestamp}")
+                    print(f"Current Price: {current_price}, Open Price: {open_price}")
+
+                    if (direction == "call" and current_price > open_price) or (
+                            direction == "put" and current_price < open_price):
+                        print("Result: WIN")
+                        return 'Win'
+                    elif (direction == "call" and current_price <= open_price) or (
+                            direction == "put" and current_price >= open_price):
+                        print("Result: LOSS")
+                        return 'Loss'
+                    else:
+                        print("Result: DOJI")
+                        return 'Doji'
+                else:
+                    print("Not a price direction.")
+            else:
+                print("Operation failed!!!")
+        else:
+            print("ERRO: Asset is closed.")
+
+    else:
+        print("Unable to connect to client.")
 
     print("Exiting...")
 
@@ -331,7 +306,7 @@ async def buy_multiple(orders=10):
     check_connect, message = await client.connect()
     for i in range(0, orders):
         print("\n/", 80 * "=", "/", end="\n")
-        print(f"Opening order: {i + 1}")
+        print(f"OPEND ORDER: {i + 1}")
         order = random.choice(order_list)
         print(order)
         if check_connect:
@@ -339,15 +314,43 @@ async def buy_multiple(orders=10):
             asset_name, asset_data = await client.get_available_asset(order['asset'], force_open=True)
             print(asset_name, asset_data)
             if asset_data[2]:
-                print("OK: Asset is closing.")
+                print("OK: Asset is open.")
                 status, buy_info = await client.buy(**order)
                 print(status, buy_info)
             else:
-                print("ERROR: Asset is closing.")
+                print("ERRO: Asset is closed.")
             print("Current Balance: ", await client.get_balance())
             await asyncio.sleep(2)
 
     print("\n/", 80 * "=", "/", end="\n")
+
+    print("Exiting...")
+
+    client.close()
+
+
+async def buy_pending():
+    check_connect, message = await client.connect()
+    if check_connect:
+        # client.change_account("REAL")
+        amount = 50
+        asset = "AUDCAD"  # "EURUSD_otc"
+        direction = "call"
+        duration = 60  # in seconds
+
+        # Format d/m h:m
+        open_time = "17/12 22:23" # If None, then this will be set to the equivalent of one minute in duration
+
+        asset_name, asset_data = await client.get_available_asset(asset, force_open=True)
+        print(asset_name, asset_data)
+        if asset_data[2]:
+            print("OK: Asset is open.")
+            status, buy_info = await client.open_pending(amount, asset_name, direction, duration, open_time)
+            print(status, buy_info)
+        else:
+            print("ERRO: Asset is closed.")
+
+        print("Current Balance: ", await client.get_balance())
 
     print("Exiting...")
 
@@ -365,7 +368,7 @@ async def sell_option():
         asset_name, asset_data = await client.get_available_asset(asset, force_open=True)
         print(asset_name, asset_data)
         if asset_data[2]:
-            print("OK: Asset is closing.")
+            print("OK: Asset is open.")
             status, buy_info = await client.buy(amount, asset_name, direction, duration)
             print(status, buy_info)
             await client.sell_option(buy_info["id"])
@@ -398,16 +401,6 @@ async def assets_open():
     client.close()
 
 
-async def get_payout():
-    check_connect, reason = await client.connect()
-    if check_connect:
-        asset_data = await client.check_asset_open("EURUSD_otc")
-        print(asset_data)
-
-    print("Exiting...")
-    client.close()
-
-
 async def get_candle():
     candles_color = []
     check_connect, message = await client.connect()
@@ -424,14 +417,14 @@ async def get_candle():
                 candles = process_candles(candles_data, period)
                 candles_data = candles
 
-            print(asset, candles_data)
+            print(asset, candles_data[-1])
 
             for candle in candles_data:
                 color = get_color(candle)
                 candles_color.append(color)
 
             # print(candles)
-            print(candles_color if len(candles_color) > 0 else "")
+            # print(candles_color if len(candles_color) > 0 else "")
         else:
             print("No candles.")
 
@@ -471,6 +464,29 @@ async def get_candle_progressive():
     client.close()
 
 
+async def get_payout():
+    check_connect, reason = await client.connect()
+    if check_connect:
+        asset_data = await client.check_asset_open("EURUSD_otc")
+        print(asset_data)
+
+    print("Exiting...")
+
+    client.close()
+
+
+# Function suggested by https://t.me/Suppor_Mk in the message https://t.me/c/2215782682/1/2990
+async def get_payout_by_asset():
+    check_connect, reason = await client.connect()
+    if check_connect:
+        asset_data = client.get_payout_by_asset("AUDCAD_otc")
+        print(asset_data)
+
+    print("Exiting...")
+
+    client.close()
+
+
 async def get_payment():
     check_connect, message = await client.connect()
     if check_connect:
@@ -494,12 +510,12 @@ async def get_candle_v2():
         asset_name, asset_data = await client.get_available_asset(asset, force_open=True)
         print(asset_name, asset_data)
         if asset_data[2]:
-            print("OK: Asset is closing.")
+            print("OK: Asset is open.")
             # 60 at 180 seconds
             candles = await client.get_candle_v2(asset_name, 60)
             print(candles)
         else:
-            print("ERROR: Asset is closing.")
+            print("ERRO: Asset is closed.")
 
     print("Exiting...")
 
@@ -510,13 +526,13 @@ async def get_candles_all_asset():
     check_connect, message = await client.connect()
     if check_connect:
         offset = 3600  # in seconds
-        period = 60    # in seconds
+        period = 60  # in seconds
         codes_asset = await client.get_all_assets()
         for asset in codes_asset.keys():
             asset_name, asset_data = await client.get_available_asset(asset)
             if asset_data[2]:
                 print(asset_name, asset_data)
-                print("OK: Asset is closing.")
+                print("OK: Asset is open.")
                 end_from_time = time.time()
                 candles = await client.get_candles(asset, end_from_time, offset, period)
                 print(candles)
@@ -525,6 +541,7 @@ async def get_candles_all_asset():
     print("Exiting...")
 
     client.close()
+
 
 async def get_realtime_candle():
     check_connect, message = await client.connect()
@@ -538,9 +555,13 @@ async def get_realtime_candle():
             while True:
                 candles = await client.get_realtime_candles(asset_name, period)
                 print(candles)
+                """for _, candle in candles.items():
+                    open_price = candle["open"]
+                    print(f"Vela atual ({asset_name}): abertura = {open_price}", end="\r")
+                """
                 await asyncio.sleep(1)
         else:
-            print("ERROR: Asset is closing.")
+            print("ERRO: Asset is closed.")
 
     print("Exiting...")
 
@@ -553,13 +574,38 @@ async def get_realtime_sentiment():
         asset = "EURUSD_otc"
         asset_name, asset_data = await client.get_available_asset(asset, force_open=True)
         if asset_data[2]:
-            print("OK: Asset is closing.")
+            print("OK: Asset is open.")
             client.start_candles_stream(asset, 60)
             while True:
                 print(await client.get_realtime_sentiment(asset_name), end="\r")
                 await asyncio.sleep(0.5)
         else:
-            print("ERROR: Asset is closing.")
+            print("ERRO: Asset is closed.")
+
+    print("Exiting...")
+
+    client.close()
+
+
+async def get_realtime_price():
+    check_connect, message = await client.connect()
+    if check_connect:
+        asset = "EURJPY_otc"
+        asset_name, asset_data = await client.get_available_asset(asset, force_open=True)
+        if asset_data[2]:
+            print("OK: Asset is open.")
+            await client.start_realtime_price(asset, 60)
+            while True:
+                candle_price = await client.get_realtime_price(asset_name)
+                print(
+                    f"Asset: {asset} "
+                    f"Time: {candle_price[-1]['time']} "
+                    f"Price: {candle_price[-1]['price']}",
+                    end="\r"
+                )
+                await asyncio.sleep(0.1)
+        else:
+            print("ERRO: Asset is closed.")
 
     print("Exiting...")
 
@@ -591,8 +637,12 @@ async def execute(argument):
             return await get_balance()
         case "get_signal_data":
             return await get_signal_data()
+        case "trade_and_monitor":
+            return await trade_and_monitor()
         case "get_payout":
             return await get_payout()
+        case "get_payout_by_asset":
+            return await get_payout_by_asset()
         case "get_payment":
             return await get_payment()
         case "assets_open":
@@ -609,6 +659,8 @@ async def execute(argument):
             return await get_realtime_candle()
         case "get_realtime_sentiment":
             return await get_realtime_sentiment()
+        case "get_realtime_price":
+            return await get_realtime_price()
         case "buy_simple":
             return await buy_simple()
         case "get_result":
@@ -617,18 +669,20 @@ async def execute(argument):
             return await buy_and_check_win()
         case "buy_multiple":
             return await buy_multiple()
+        case "buy_pending":
+            return await buy_pending()
         case "balance_refill":
             return await balance_refill()
         case "help":
             print(f"Use: {'./app' if getattr(sys, 'frozen', False) else 'python app.py'} <option>")
             return print(get_all_options())
         case _:
-            return print("Invalid option. Use 'help' to get list of options.")
+            return print("Invalid option. Use 'help' to get a list of options.")
 
 
 async def main():
     if len(sys.argv) != 2:
-        await test_connection()
+        # await test_connection()
         # await get_balance()
         # await get_profile()
         # await buy_simple()
@@ -645,96 +699,6 @@ if __name__ == "__main__":
     try:
         loop.run_until_complete(main())
     except KeyboardInterrupt:
-        print("Closing the program.")
+        print("Closing at program.")
     finally:
         loop.close()
-
-```
-
-# Available Functions in the Script 🚀
-
-This script provides various functionalities to interact with the Quotex API. Each function is designed to perform specific tasks, from the initial connection to financial operations and data retrieval. Check out the details below:
-
----
-
-### 🔌 Server Connection
-
-- **`connect(attempts=5)`**
-  - Attempts to connect to the Quotex server with multiple retries in case of failure. Includes automatic reconnection and session cleanup if necessary.
-
----
-
-### ✅ Connection Tests
-
-- **`test_connection()`**
-  - Verifies if the connection to the server was successful and prints the status.
-
----
-
-### 💰 Balance Management
-
-- **`get_balance()`**
-  - Retrieves the current account balance (demo or real).
-
-- **`balance_refill()`**
-  - Refills the demo account balance to a default value.
-
----
-
-### 🛒 Purchase Operations
-
-- **`buy_simple()`**
-  - Executes a simple purchase operation with specified parameters like asset, direction, duration, and amount.
-
-- **`buy_and_check_win()`**
-  - Performs a purchase and waits for the result to check if the operation was profitable.
-
-- **`buy_multiple(orders=10)`**
-  - Executes multiple purchase operations in sequence, randomly selecting between different assets and configurations.
-
----
-
-### 📊 Profile and Asset Data
-
-- **`get_profile()`**
-  - Retrieves user profile information, such as demo balance, real balance, and profile ID.
-
-- **`assets_open()`**
-  - Lists all available assets and checks which ones are open for trading.
-
-- **`get_payout()`**
-  - Checks the payout percentage of a specific asset.
-
----
-
-### 🕯️ Candlestick Data
-
-- **`get_candle()`**
-  - Retrieves historical candlestick data for a specific asset over a given period.
-
-- **`get_candle_progressive()`**
-  - Fetches progressive historical candlestick data covering a larger period.
-
----
-
-### 🔄 Option Selling
-
-- **`sell_option()`**
-  - Performs an early sale of a previously purchased option based on the operation ID.
-
----
-
-### 🔍 Utilities and Support
-
-- **`get_all_options()`**
-  - Lists all available options in this script, including test functions, operations, and queries.
-
-- **`asset_parse(asset: str)`**
-  - Formats the name of an asset for more user-friendly display, highlighting if it is OTC.
-
----
-
-💡 **Note**: Ensure that your login credentials are correctly configured before running the functions.
-
-🎉 Enjoy the script to automate and simplify your operations on Quotex!
-

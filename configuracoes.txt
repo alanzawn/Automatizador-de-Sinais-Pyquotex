@@ -1,0 +1,19 @@
+==================================================
+Configuracoes do Robo de Operacoes
+==================================================
+tipo_conta: 1
+capital_inicial: 898.2
+payout_minimo: 80
+tipo_gerenciamento: 1
+gerenciamento: mao fixa
+tipo_takeprofit: 1
+take_profit: 100
+take_valor: 998.2
+tipo_stoploss: 1
+stop_loss: 100
+stop_valor: 798.2
+usar_martingale: 1
+usar_trailingStop: 1
+valor_inicial_operacao: 10
+break: false
+==================================================

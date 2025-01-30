@@ -1,0 +1,6 @@
+=== Dados das Operações ===
+Saldo Atual: R$ 898,20
+Lucro/Prejuízo Total: R$ 0,00
+Entradas Totais: 0
+Wins: 0
+Losses: 0
